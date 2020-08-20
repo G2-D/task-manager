@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<title>Task Manager</title>
+	</head>
+	<body>
+		<main class="pb-5">
+			<div class="container">
+				<div class="row">
+					<div class="offset-lg-2 col-lg-8">
+						<h1 class="text-center mt-5">
+							Gerenciador de tarefas
+						</h1>
+						<form id="form_register_task" class="mt-4">
+							<div class="form-row align-items-end">
+								<div class="form-group col">
+									<label for="task">
+										Título da tarefa
+									</label>
+									<input type="text" class="form-control form-control-lg" id="task" name="task" placeholder="Ex: Desenvolver sistema de gerenciamento de tarefas">
+								</div>
+								<div class="form-group col col-sm col-sm-auto">
+									<button type="submit" class="btn btn-lg btn-success">
+										Cadastrar
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="offset-lg-2 col-lg-8">
+						<h2 class="mt-5">
+							Lista de tarefas
+						</h2>
+						<form id="form_task_list" class="mt-4">
+							<div class="alert alert-info">
+								<p class="text-center mb-0">
+									Nenhum tarefa foi cadastrada
+								</p>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+		<template id="task_template">
+			<div class="form-row">
+				<div class="form-group col">
+					<input type="text" class="form-control form-control-lg task-field" name="task" disabled />
+				</div>
+				<div class="form-group col">
+					<input type="text" class="form-control form-control-lg time-field" name="time" />
+				</div>
+				<div class="form-group col col-sm col-sm-auto">
+					<div class="btn-group">
+						<button type="button" class="btn btn-lg btn-primary play-task">
+							Iniciar
+						</button>
+						<button type="button" class="btn btn-lg btn-warning stop-task">
+							Pausar
+						</button>
+					</div>
+				</div>
+			</div>
+		</template>
+		<script defer type="application/javascript" src="scripts.js"></script>
+	</body>
+</html>
