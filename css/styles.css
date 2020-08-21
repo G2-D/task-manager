@@ -1,0 +1,212 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+input,
+button {
+  font: 16px Roboto, sans-serif;
+}
+
+#root {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.title {
+  font-size: 48px;
+  color: #ffffff;
+  max-width: 458px;
+  margin-top: 50px;
+  line-height: 56px;
+  color: #fa9d1c;
+}
+
+.form-add-taks {
+  width: 707px;
+  margin-top: 40px;
+  display: flex;
+}
+
+.form-add-taks input {
+  flex: 1;
+  height: 72px;
+  border: 0;
+  padding: 0 24px;
+  border-radius: 5px 0 0 5px;
+  font-weight: 100;
+  color: #3a3a3a;
+  border: 2px solid #21222c;
+  border-right: 0;
+  font-size: 20px;
+  transition: border 0.2s;
+}
+
+.form-add-taks input::placeholder {
+  color: #a8a8b3;
+}
+
+.form-add-taks input:focus {
+  border: 2px solid #f57921;
+  border-right: 0;
+}
+
+.form-add-taks button {
+  width: 206px;
+  height: 72px;
+  background: #f57921;
+  border-radius: 0px 5px 5px 0px;
+  color: #fff;
+  font-weight: bold;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  border: 2px solid #f57921;
+  border-left: 0;
+  font-size: 18px;
+}
+
+.form-add-taks button:hover {
+  background: #df6b19;
+  border: 2px solid #df6b19;
+  border-left: 0;
+}
+
+.task-list {
+  margin-top: 80px;
+  max-width: 960px;
+  height: 100%;
+}
+
+.task-list .task-item {
+  background: #ffffff;
+  box-shadow: 0px 1px 6px #ced0d3;
+  border-radius: 5px;
+  width: 100%;
+  padding: 24px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-list .task-item .task-field {
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+  color: #434141;
+}
+
+.task-list .task-item .time-field {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #6b6c70;
+}
+
+.task-list .task-item .control-start {
+  width: 130px;
+  height: 41px;
+  background: #f57921;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  border: none;
+  font-size: 16px;
+}
+
+.task-list .task-item .control-start:hover {
+  background: #df6b19;
+}
+
+.task-list .task-item .control-stop {
+  width: 130px;
+  height: 41px;
+  background: #004b8f;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  border: none;
+  font-size: 16px;
+}
+
+.task-list .task-item .control-stop:hover {
+  background: #013f79;
+}
+
+.task-list .task-item + .task-item {
+  margin-top: 16px;
+}
+
+footer {
+  width: 100%;
+  background: #fff;
+  padding: 10px 10px;
+  margin-top: 80px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 5;
+  position: sticky;
+  bottom: 0;
+  margin-bottom: -10px;
+}
+
+.shadow {
+  position: sticky;
+  bottom: 106px;
+  width: 99%;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.75);
+  margin: 0 auto;
+}
+
+footer .total-time-container {
+  display: flex;
+  flex-direction: column;
+}
+
+footer .total-time-container .total-time {
+  font-weight: bold;
+  font-size: 48px;
+  color: #0059ab;
+}
+
+footer .total-time-container .total-time-title {
+  font-size: 24px;
+  line-height: 28px;
+  color: #404043;
+}
+
+footer button {
+  width: 187px;
+  height: 59px;
+  background: #f57921;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  border: none;
+  font-size: 24px;
+  margin-left: 40px;
+}
+
+footer button:hover {
+  background: #df6b19;
+}
