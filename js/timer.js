@@ -16,7 +16,7 @@ Timer.prototype.start = function () {
 
 	if (!this.timeInterval) {
 
-		this.timeInterval = setInterval(() => this.count(), 1000)
+		this.timeInterval = setInterval(function () { this.count(); }, 1000)
 	}
 
 	return this;
@@ -43,9 +43,9 @@ Timer.prototype.count = function () {
 
 Timer.prototype.calculate = function () {
 
-	const hours		= Math.floor(this.timeStamp / 60 / 60);
-	const minutes	= Math.floor(this.timeStamp / 60) - (hours * 60);
-	const seconds	= this.timeStamp % 60;
+	var hours	= Math.floor(this.timeStamp / 60 / 60);
+	var minutes	= Math.floor(this.timeStamp / 60) - (hours * 60);
+	var seconds	= this.timeStamp % 60;
 
 	this.date = {
 		hours,
