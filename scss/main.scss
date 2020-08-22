@@ -1,5 +1,12 @@
+$invert-colors: false !default;
+
 $primary-color: #f57921;
 $secondary-color: #004b8f;
+
+@if $invert-colors {
+  $primary-color: #004b8f;
+  $secondary-color: #f57921;
+}
 
 @mixin transition($property) {
   -webkit-transition: $property;
@@ -180,7 +187,7 @@ footer {
     .total-time {
       font-weight: bold;
       font-size: 48px;
-      color: #0059ab;
+      color: $secondary-color;
     }
 
     .total-time-title {
