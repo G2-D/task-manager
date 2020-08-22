@@ -4,7 +4,8 @@
   "description": "<h1 align=\"center\">\r Task Manager\r </h1>",
   "main": "index.js",
   "scripts": {
-    "start:sass": "node-sass scss/main.scss css/main.css -w"
+    "start:sass": "node-sass scss/main.scss css/main.css -w",
+    "compile:sass": "node-sass scss/main.scss css/main.css"
   },
   "repository": {
     "type": "git",
