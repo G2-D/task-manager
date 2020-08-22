@@ -43,7 +43,6 @@
 		e.preventDefault();
 
 		var target 		= e.target;
-		var timestamp 	= target.getAttribute('data-timestamp');
 		var index		= target.getAttribute('data-index');
 
 		var parentNode 	= target.parentNode;
@@ -55,7 +54,7 @@
 
 			textField.innerText = timeToString(date);
 
-			updateStorageData(index, instance.timeStamp);
+			updateStorageData(index, instance.timeStamp, true);
 		});
 
 		//
@@ -74,6 +73,8 @@
 		var parentNode 	= target.parentNode;
 
 		timerInstance[index].stop();
+		
+		updateStorageData(index, timerInstance[index].timeStamp, false);
 
 		//
 		target.style.display = 'none';
@@ -109,11 +110,14 @@
 						taskContent.querySelector('.time-field').innerText = timeToString(timer.date);
 	
 						btnStart.setAttribute('data-index', index);
-						// btnStart.setAttribute('data-timestamp', item.timestamp);
 						btnStart.addEventListener('click', playTask);
+
+						if (item.started) {
+
+							btnStart.click();
+						}
 	
 						btnStop.setAttribute('data-index', index);
-						// btnStop.setAttribute('data-timestamp', item.timestamp);
 						btnStop.addEventListener('click', stopTask);
 						
 						taskList.appendChild(taskContent);
@@ -136,11 +140,12 @@
 		localStorage.setItem('task-list', JSON.stringify(data));
 	};
 
-	var updateStorageData = function (index, timestamp) {
+	var updateStorageData = function (index, timestamp, started) {
 
 		var storageData = getStorageData();
 
 		storageData[index].timestamp = timestamp;
+		storageData[index].started = started;
 
 		setStorageData(storageData);
 	};
@@ -158,7 +163,8 @@
 
 		var data = {
 			label 		: input.value,
-			timestamp 	: 0
+			timestamp 	: 0,
+			started 	: false
 		};
 
 		var storageData = getStorageData();
