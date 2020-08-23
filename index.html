@@ -13,11 +13,11 @@
 	<main id="root">
 		<h1 class="title">Gerenciador de tasks e reports</h1>
 		<form id="form_register_task" class="form-add-taks">
-			<input type="text" placeholder="Descrição da tarefa" id="task" value="">
-			<button type="button">Adicionar</button>
+			<input type="text" placeholder="Descrição da tarefa" id="input_task" />
+			<button type="submit" id="btn_register_task">Adicionar</button>
 		</form>
-		<div class="task-list">
-			<div class="task-item">
+		<div id="task_list" class="task-list">
+			<!-- <div class="task-item">
 				<span class="tesk-field">Lorem ipsum dolor sit</span>
 				<strong class="time-field">00:00:01</strong>
 				<button type="button" class="control-stop" name="control">stop</button>
@@ -26,18 +26,35 @@
 				<span class="tesk-field">Lorem ipsum dolor sit</span>
 				<strong class="time-field">00:00:01</strong>
 				<button type="button" class="control-start" name="control">start</button>
-			</div>
+			</div> -->
 		</div>
 		<footer>
 			<div class="total-time-container">
-				<strong class="total-time">00:00:02</strong>
+				<strong class="total-time">00:00:00</strong>
 				<span class="total-time-title">Total trabalhado</span>
 			</div>
-			<button type="button">Calcular</button>
+			<button type="button" id="btn_calculate_total">Calcular</button>
 		</footer>
 		<div class="shadow"></div>
 	</main>
-	<!-- <script defer type="application/javascript" src="js/scripts.js"></script> -->
+	<template id="task_template">
+		<div class="task-item">
+			<span class="tesk-field">
+				<!-- Texto da task -->
+			</span>
+			<strong class="time-field">
+				<!-- Tempo da task -->
+			</strong>
+			<button type="button" class="control-start" name="control">
+				start
+			</button>
+			<button type="button" class="control-stop" name="control" style="display: none;">
+				stop
+			</button>
+		</div>
+	</template>
+	<script defer type="application/javascript" src="js/timer.js"></script>
+	<script defer type="application/javascript" src="js/scripts.js"></script>
 </body>
 
 </html>
