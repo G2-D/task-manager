@@ -2,20 +2,24 @@
 
 	var formRegisterTask		= document.getElementById('form_register_task');
 	var buttonCalculateTotal 	= document.getElementById('btn_calculate_total');
+	var buttonClearList 		= document.getElementById('btn_clear_list');
+	var taskList 				= document.getElementById('task_list');
+	var checkAutoCalculate 		= document.getElementById('auto-calc');
+	var autoCalculateInterval 	= 0;
 	var timerInstance 			= [];
 	var templateTask 			= null;
 
-	var setTemplateTask = (template) => {
+	var setTemplateTask = function (template) {
 
 		templateTask = template;
 	};
 
-	var getTemplateTask = () => {
+	var getTemplateTask = function () {
 
 		return templateTask;
 	};
 
-	var verifyTemplate = () => {
+	var verifyTemplate = function () {
 
 		var template = document.getElementById('task_template');
 
@@ -38,19 +42,17 @@
 		return hours + ':' + minutes + ':' + seconds;
 	};
 
-	var playTask = (e) => {
+	var playTask = function (e) {
 
 		e.preventDefault();
-    
+
 		var target 		= e.target;
 		var index		= target.getAttribute('data-index');
 
-		var parentNode 	= target.parentNode;
+		var parentNode 	= target.closest('.task-item');
 		var textField 	= parentNode.querySelector('.time-field');
 
-		var timer 		= timerInstance[index];
-
-		timer.start().done(function (date, instance) {
+		this.start().done(function (date, instance) {
 
 			textField.innerText = timeToString(date);
 
@@ -63,18 +65,18 @@
 		parentNode.querySelector('.control-stop').style.display = 'block';
 	};
 
-	var stopTask = (e) => {
+	var stopTask = function (e) {
 
 		e.preventDefault();
 
 		var target	= e.target;
 		var index	= target.getAttribute('data-index');
 
-		var parentNode 	= target.parentNode;
+		var parentNode 	= target.closest('.task-item');
 
-		timerInstance[index].stop();
+		this.stop();
 		
-		updateStorageData(index, timerInstance[index].timeStamp, false);
+		updateStorageData(index, this.timeStamp, false);
 
 		//
 		target.style.display = 'none';
@@ -82,16 +84,37 @@
 		parentNode.querySelector('.control-start').style.display = 'block';
 	};
 
-	var renderTaskList = (list) => {
+	var removeTask = function (e) {
 
-		var taskList 	= document.getElementById('task_list');
-		var taskItems 	= taskList.querySelectorAll('.task-item')
+		e.preventDefault();
+
+		var storageData = getStorageData();
+		var target 		= e.target;
+		var index 		= target.getAttribute('data-index');
+
+		timerInstance.forEach((item) => {
+
+			item.stop();
+		});
+
+		storageData.splice(index, 1);
+
+		setStorageData(storageData);
+
+		taskList.innerHTML = '';
+
+		renderTaskList(storageData);
+	};
+
+	var renderTaskList = function (list) {
+
+		var taskItems = taskList.querySelectorAll('.task-item');
 
 		if (Array.isArray(list)) {
 
 			var templateTask = getTemplateTask();
 	
-			list.forEach((item, index) => {
+			list.forEach(function (item, index) {
 				
 				if (item.hasOwnProperty('label') && item.hasOwnProperty('timestamp')) {
 
@@ -101,16 +124,17 @@
 	
 						var btnStart 	= taskContent.querySelector('.control-start');
 						var btnStop 	= taskContent.querySelector('.control-stop');
+						var btnRemove 	= taskContent.querySelector('.control-remove');
 	
 						var timer		= new Timer(item.timestamp);
-	
+					
 						timerInstance[index] = timer;
 			
-						taskContent.querySelector('.tesk-field').innerText = item.label;
+						taskContent.querySelector('.task-field').innerText = item.label;
 						taskContent.querySelector('.time-field').innerText = timeToString(timer.date);
 	
 						btnStart.setAttribute('data-index', index);
-						btnStart.addEventListener('click', playTask);
+						btnStart.addEventListener('click', playTask.bind(timer));
 
 						if (item.started) {
 
@@ -118,13 +142,18 @@
 						}
 	
 						btnStop.setAttribute('data-index', index);
-						btnStop.addEventListener('click', stopTask);
+						btnStop.addEventListener('click', stopTask.bind(timer));
+
+						btnRemove.setAttribute('data-index', index);
+						btnRemove.addEventListener('click', removeTask.bind(timer));
 						
 						taskList.appendChild(taskContent);
 					}
 				}
 			});
 		}
+
+		getTotalTime();
 	};
 
 	var getStorageData = function () {
@@ -143,9 +172,9 @@
 	var updateStorageData = function (index, timestamp, started) {
 
 		var storageData = getStorageData();
-
-		storageData[index].timestamp = timestamp;
-		storageData[index].started = started;
+	
+		storageData[index].timestamp 	= timestamp;
+		storageData[index].started 		= started;
 
 		setStorageData(storageData);
 	};
@@ -200,15 +229,63 @@
 		getTotalTime();
 	};
 
+	var clearTaskList = function (e) {
+
+		e.preventDefault();
+
+		timerInstance.forEach(function (item) {
+
+			item.stop();
+		});
+
+		timerInstance = [];
+
+		localStorage.clear('task-list');
+
+		taskList.innerHTML = '';
+
+		getTotalTime();
+	};
+
+	var setAutoCalculate = function (e) {
+
+		e.preventDefault();
+
+		var target = e.target;
+
+		localStorage.setItem('auto-calculate', target.checked);
+
+		autoCalculate();
+	};
+
+	var autoCalculate = function () {
+
+		var isAuto = localStorage.getItem('auto-calculate') === 'true';
+
+		if (!isAuto) {
+			
+			clearInterval(autoCalculateInterval);
+
+			return false;
+		}
+
+		checkAutoCalculate.setAttribute('checked', true);
+
+		autoCalculateInterval = setInterval(getTotalTime, 1000);
+	};
+
 	var init = function () {
 
 		formRegisterTask.addEventListener('submit', submitForm);
 		buttonCalculateTotal.addEventListener('click', calculateTotal);
+		buttonClearList.addEventListener('click', clearTaskList);
+		checkAutoCalculate.addEventListener('change', setAutoCalculate);
 
 		if (verifyTemplate()) {
 
 			renderTaskList(getStorageData());
-			getTotalTime();
+
+			autoCalculate();
 		}
 	};
 

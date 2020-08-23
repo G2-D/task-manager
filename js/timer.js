@@ -29,7 +29,7 @@ Timer.prototype.stop = function () {
 
 	clearInterval(this.timeInterval);
 
-	this.timeInterval = null;
+	this.timeInterval = 0;
 };
 
 Timer.prototype.count = function () {
