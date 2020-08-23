@@ -2,8 +2,10 @@
 
 	var formRegisterTask		= document.getElementById('form_register_task');
 	var buttonCalculateTotal 	= document.getElementById('btn_calculate_total');
-	var buttonClearList 		= document.getElementById('clear_task_list');
+	var buttonClearList 		= document.getElementById('btn_clear_list');
 	var taskList 				= document.getElementById('task_list');
+	var checkAutoCalculate 		= document.getElementById('auto-calc');
+	var autoCalculateInterval 	= 0;
 	var timerInstance 			= [];
 	var templateTask 			= null;
 
@@ -43,11 +45,11 @@
 	var playTask = function (e) {
 
 		e.preventDefault();
-    
+
 		var target 		= e.target;
 		var index		= target.getAttribute('data-index');
 
-		var parentNode 	= target.parentNode;
+		var parentNode 	= target.closest('.task-item');
 		var textField 	= parentNode.querySelector('.time-field');
 
 		this.start().done(function (date, instance) {
@@ -70,7 +72,7 @@
 		var target	= e.target;
 		var index	= target.getAttribute('data-index');
 
-		var parentNode 	= target.parentNode;
+		var parentNode 	= target.closest('.task-item');
 
 		this.stop();
 		
@@ -128,7 +130,7 @@
 					
 						timerInstance[index] = timer;
 			
-						taskContent.querySelector('.tesk-field').innerText = item.label;
+						taskContent.querySelector('.task-field').innerText = item.label;
 						taskContent.querySelector('.time-field').innerText = timeToString(timer.date);
 	
 						btnStart.setAttribute('data-index', index);
@@ -150,6 +152,8 @@
 				}
 			});
 		}
+
+		getTotalTime();
 	};
 
 	var getStorageData = function () {
@@ -239,18 +243,49 @@
 		localStorage.clear('task-list');
 
 		taskList.innerHTML = '';
+
+		getTotalTime();
+	};
+
+	var setAutoCalculate = function (e) {
+
+		e.preventDefault();
+
+		var target = e.target;
+
+		localStorage.setItem('auto-calculate', target.checked);
+
+		autoCalculate();
+	};
+
+	var autoCalculate = function () {
+
+		var isAuto = localStorage.getItem('auto-calculate') === 'true';
+
+		if (!isAuto) {
+			
+			clearInterval(autoCalculateInterval);
+
+			return false;
+		}
+
+		checkAutoCalculate.setAttribute('checked', true);
+
+		autoCalculateInterval = setInterval(getTotalTime, 1000);
 	};
 
 	var init = function () {
 
 		formRegisterTask.addEventListener('submit', submitForm);
 		buttonCalculateTotal.addEventListener('click', calculateTotal);
-		buttonClearList.addEventListener('click', clearTaskList)
+		buttonClearList.addEventListener('click', clearTaskList);
+		checkAutoCalculate.addEventListener('change', setAutoCalculate);
 
 		if (verifyTemplate()) {
 
 			renderTaskList(getStorageData());
-			getTotalTime();
+
+			autoCalculate();
 		}
 	};
 

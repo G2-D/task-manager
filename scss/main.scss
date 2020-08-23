@@ -2,6 +2,7 @@ $invert-colors: false !default;
 
 $primary-color: #f57921;
 $secondary-color: #004b8f;
+$danger-color: #935ba8;
 
 @if $invert-colors {
   $primary-color: #004b8f;
@@ -53,7 +54,7 @@ button {
 }
 
 .form-add-taks {
-  width: 707px;
+  max-width: 960px;
   margin-top: 40px;
   display: flex;
 
@@ -97,6 +98,25 @@ button {
       border-left: 0;
     }
   }
+
+  #btn_clear_list {
+    height: 72px;
+    margin-left: 60px;
+    background: $danger-color;
+    border-radius: 5px 5px 5px 5px;
+
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-left: 0;
+    font-size: 18px;
+    @include transition(background-color 0.3s);
+
+    &:hover {
+      background: darken($danger-color, 10%);
+      border-left: 0;
+    }
+  }
 }
 
 .task-list {
@@ -114,12 +134,20 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateX(10px);
+    }
 
     .task-field {
       font-weight: normal;
-      font-size: 24px;
-      line-height: 28px;
+      font-size: 18px;
       color: #434141;
+      white-space: nowrap;
+      width: 30em;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .time-field {
@@ -127,37 +155,56 @@ button {
       font-size: 24px;
       line-height: 28px;
       color: #6b6c70;
+      margin-right: 80px;
+      margin-left: 10px;
     }
 
-    .control-start {
-      width: 130px;
-      height: 41px;
-      background: $primary-color;
-      border-radius: 5px;
-      color: #fff;
-      font-weight: 500;
-      border: none;
-      font-size: 16px;
-      @include transition(background 0.3s);
+    .task-actions {
+      display: flex;
+      align-items: center;
 
-      &:hover {
-        background: darken($primary-color, 10%);
+      .control-start {
+        width: 130px;
+        height: 41px;
+        background: $primary-color;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        font-size: 16px;
+        @include transition(background 0.3s);
+
+        &:hover {
+          background: darken($primary-color, 10%);
+        }
       }
-    }
 
-    .control-stop {
-      width: 130px;
-      height: 41px;
-      background: $secondary-color;
-      border-radius: 5px;
-      color: #fff;
-      font-weight: 500;
-      border: none;
-      font-size: 16px;
-      @include transition(background 0.3s);
+      .control-stop {
+        width: 130px;
+        height: 41px;
+        background: $secondary-color;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        font-size: 16px;
+        @include transition(background 0.3s);
 
-      &:hover {
-        background: darken($secondary-color, 5%);
+        &:hover {
+          background: darken($secondary-color, 5%);
+        }
+      }
+
+      .material-icons {
+        margin-left: 10px;
+        font-size: 38px;
+        color: #935ba8;
+        cursor: pointer;
+        @include transition(color 0.3s);
+
+        &:hover {
+          color: darken($danger-color, 10%);
+        }
       }
     }
 
@@ -171,29 +218,86 @@ footer {
   width: 100%;
   background: #fff;
   padding: 10px 10px;
-  margin-top: 80px;
+  margin-top: 30px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   z-index: 5;
   position: sticky;
   bottom: 0;
   margin-bottom: -10px;
 
-  .total-time-container {
-    display: flex;
-    flex-direction: column;
+  .auto-calc-container {
+    justify-self: flex-start;
 
-    .total-time {
-      font-weight: bold;
-      font-size: 48px;
-      color: $secondary-color;
+    input[type="checkbox"] + label {
+      display: block;
+      margin: 0.3em;
+      cursor: pointer;
+      padding: 0.3em;
     }
 
-    .total-time-title {
-      font-size: 24px;
-      line-height: 28px;
-      color: #404043;
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"] + label:before {
+      content: "\2714";
+      border: 0.1em solid #000;
+      border-radius: 0.2em;
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      padding-left: 0.2em;
+      padding-bottom: 0.3em;
+      margin-right: 0.5em;
+      vertical-align: center;
+      color: transparent;
+      transition: 0.2s;
+    }
+
+    input[type="checkbox"] + label:active:before {
+      transform: scale(0);
+    }
+
+    input[type="checkbox"]:checked + label:before {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: #fff;
+    }
+
+    input[type="checkbox"]:disabled + label:before {
+      transform: scale(1);
+      border-color: #aaa;
+    }
+
+    input[type="checkbox"]:checked:disabled + label:before {
+      transform: scale(1);
+      background-color: lighten($primary-color, 10%);
+      border-color: lighten($primary-color, 10%);
+    }
+  }
+
+  .actions-footer-calc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .total-time-container {
+      display: flex;
+      flex-direction: column;
+
+      .total-time {
+        font-weight: bold;
+        font-size: 48px;
+        color: $secondary-color;
+      }
+
+      .total-time-title {
+        font-size: 24px;
+        line-height: 28px;
+        color: #404043;
+      }
     }
   }
 
