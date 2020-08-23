@@ -30,7 +30,7 @@ button {
   color: #f68839; }
 
 .form-add-taks {
-  width: 707px;
+  max-width: 960px;
   margin-top: 40px;
   display: flex; }
   .form-add-taks input {
@@ -70,6 +70,23 @@ button {
     .form-add-taks button:hover {
       background: #d9600a;
       border-left: 0; }
+  .form-add-taks #btn_clear_list {
+    height: 72px;
+    margin-left: 60px;
+    background: #935ba8;
+    border-radius: 5px 5px 5px 5px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-left: 0;
+    font-size: 18px;
+    -webkit-transition: background-color 0.3s;
+    -ms-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    transition: background-color 0.3s; }
+    .form-add-taks #btn_clear_list:hover {
+      background: #774888;
+      border-left: 0; }
 
 .task-list {
   margin-top: 80px;
@@ -84,47 +101,69 @@ button {
     text-decoration: none;
     display: flex;
     align-items: center;
-    justify-content: space-between; }
+    justify-content: space-between;
+    transition: transform 0.2s; }
+    .task-list .task-item:hover {
+      transform: translateX(10px); }
     .task-list .task-item .task-field {
       font-weight: normal;
-      font-size: 24px;
-      line-height: 28px;
-      color: #434141; }
+      font-size: 18px;
+      color: #434141;
+      white-space: nowrap;
+      width: 30em;
+      overflow: hidden;
+      text-overflow: ellipsis; }
     .task-list .task-item .time-field {
       font-weight: bold;
       font-size: 24px;
       line-height: 28px;
-      color: #6b6c70; }
-    .task-list .task-item .control-start {
-      width: 130px;
-      height: 41px;
-      background: #f57921;
-      border-radius: 5px;
-      color: #fff;
-      font-weight: 500;
-      border: none;
-      font-size: 16px;
-      -webkit-transition: background 0.3s;
-      -ms-transition: background 0.3s;
-      -moz-transition: background 0.3s;
-      transition: background 0.3s; }
-      .task-list .task-item .control-start:hover {
-        background: #d9600a; }
-    .task-list .task-item .control-stop {
-      width: 130px;
-      height: 41px;
-      background: #004b8f;
-      border-radius: 5px;
-      color: #fff;
-      font-weight: 500;
-      border: none;
-      font-size: 16px;
-      -webkit-transition: background 0.3s;
-      -ms-transition: background 0.3s;
-      -moz-transition: background 0.3s;
-      transition: background 0.3s; }
-      .task-list .task-item .control-stop:hover {
-        background: #003e76; }
+      color: #6b6c70;
+      margin-right: 80px;
+      margin-left: 10px; }
+    .task-list .task-item .task-actions {
+      display: flex;
+      align-items: center; }
+      .task-list .task-item .task-actions .control-start {
+        width: 130px;
+        height: 41px;
+        background: #f57921;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        font-size: 16px;
+        -webkit-transition: background 0.3s;
+        -ms-transition: background 0.3s;
+        -moz-transition: background 0.3s;
+        transition: background 0.3s; }
+        .task-list .task-item .task-actions .control-start:hover {
+          background: #d9600a; }
+      .task-list .task-item .task-actions .control-stop {
+        width: 130px;
+        height: 41px;
+        background: #004b8f;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        font-size: 16px;
+        -webkit-transition: background 0.3s;
+        -ms-transition: background 0.3s;
+        -moz-transition: background 0.3s;
+        transition: background 0.3s; }
+        .task-list .task-item .task-actions .control-stop:hover {
+          background: #003e76; }
+      .task-list .task-item .task-actions .material-icons {
+        margin-left: 10px;
+        font-size: 38px;
+        color: #935ba8;
+        cursor: pointer;
+        -webkit-transition: color 0.3s;
+        -ms-transition: color 0.3s;
+        -moz-transition: color 0.3s;
+        transition: color 0.3s; }
+        .task-list .task-item .task-actions .material-icons:hover {
+          color: #774888; }
     .task-list .task-item + .task-item {
       margin-top: 16px; }
 
@@ -132,25 +171,64 @@ footer {
   width: 100%;
   background: #fff;
   padding: 10px 10px;
-  margin-top: 80px;
+  margin-top: 30px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   z-index: 5;
   position: sticky;
   bottom: 0;
   margin-bottom: -10px; }
-  footer .total-time-container {
+  footer .auto-calc-container {
+    justify-self: flex-start; }
+    footer .auto-calc-container input[type="checkbox"] + label {
+      display: block;
+      margin: 0.3em;
+      cursor: pointer;
+      padding: 0.3em; }
+    footer .auto-calc-container input[type="checkbox"] {
+      display: none; }
+    footer .auto-calc-container input[type="checkbox"] + label:before {
+      content: "\2714";
+      border: 0.1em solid #000;
+      border-radius: 0.2em;
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      padding-left: 0.2em;
+      padding-bottom: 0.3em;
+      margin-right: 0.5em;
+      vertical-align: center;
+      color: transparent;
+      transition: 0.2s; }
+    footer .auto-calc-container input[type="checkbox"] + label:active:before {
+      transform: scale(0); }
+    footer .auto-calc-container input[type="checkbox"]:checked + label:before {
+      background-color: #f57921;
+      border-color: #f57921;
+      color: #fff; }
+    footer .auto-calc-container input[type="checkbox"]:disabled + label:before {
+      transform: scale(1);
+      border-color: #aaa; }
+    footer .auto-calc-container input[type="checkbox"]:checked:disabled + label:before {
+      transform: scale(1);
+      background-color: #f79652;
+      border-color: #f79652; }
+  footer .actions-footer-calc {
     display: flex;
-    flex-direction: column; }
-    footer .total-time-container .total-time {
-      font-weight: bold;
-      font-size: 48px;
-      color: #004b8f; }
-    footer .total-time-container .total-time-title {
-      font-size: 24px;
-      line-height: 28px;
-      color: #404043; }
+    flex-direction: row;
+    align-items: center; }
+    footer .actions-footer-calc .total-time-container {
+      display: flex;
+      flex-direction: column; }
+      footer .actions-footer-calc .total-time-container .total-time {
+        font-weight: bold;
+        font-size: 48px;
+        color: #004b8f; }
+      footer .actions-footer-calc .total-time-container .total-time-title {
+        font-size: 24px;
+        line-height: 28px;
+        color: #404043; }
   footer button {
     width: 187px;
     height: 59px;
