@@ -8,6 +8,10 @@ Task Manager
   <p align="center">
     <img src="https://i.imgur.com/JtJYka7.png" alt="demo-web" width="800">
   <p align="center">
+  <br><br>
+  <p align="center">
+    <a href="https://task-manager-g2-d.netlify.app/" targe="_blank">LIVE DEMO</a>
+  <p align="center">
 </div>
 
 <hr />
