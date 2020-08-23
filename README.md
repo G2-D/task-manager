@@ -11,7 +11,6 @@ Task Manager
 </div>
 
 <hr />
-<<<<<<< HEAD
 
 ## Começando
 
@@ -20,5 +19,3 @@ Task Manager
 3. Execute `npm install` para instalar as dependências <br />
 4. Execute `npm run compile:sass` para compilar os arquivos SASS <br />
 5. Para concluir abra o arquivo `index.html`.
-=======
->>>>>>> grd_bruno
