@@ -43,7 +43,7 @@
 	var playTask = function (e) {
 
 		e.preventDefault();
-
+    
 		var target 		= e.target;
 		var index		= target.getAttribute('data-index');
 
