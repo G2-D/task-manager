@@ -6,7 +6,7 @@ Task Manager
 
 <div>
   <p align="center">
-    <img src="https://i.imgur.com/YDIEcJU.png" alt="demo-web" width="800">
+    <img src="https://i.imgur.com/YDIEcJU.png?2" alt="demo-web" width="800">
   <p align="center">
 </div>
 
