@@ -1,70 +1,65 @@
 function Timer(timestamp) {
+  this.timeInterval = null;
+  this.timeStamp = timestamp || 0;
+  this.callback = null;
+  this.date = {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  };
 
-	this.timeInterval 	= null;
-	this.timeStamp 		= timestamp || 0;
-	this.callback 		= null;
-	this.date 			= {
-		hours 	: 0,
-		minutes	: 0,
-		seconds	: 0
-	};
-
-	this.calculate();
-
+  this.calculate();
 }
 
 Timer.prototype.start = function () {
+  this.stop();
 
-	this.stop();
+  if (!this.timeInterval) {
+    this.timeInterval = setInterval(
+      function () {
+        this.count();
+      }.bind(this),
+      1000
+    );
+  }
 
-	if (!this.timeInterval) {
-    
-		this.timeInterval = setInterval(function () { this.count(); }.bind(this), 1000)
-	}
-
-	return this;
+  return this;
 };
 
 Timer.prototype.stop = function () {
+  clearInterval(this.timeInterval);
 
-	clearInterval(this.timeInterval);
-
-	this.timeInterval = null;
+  this.timeInterval = null;
 };
 
 Timer.prototype.count = function () {
+  this.timeStamp++;
 
-	this.timeStamp++;
+  this.calculate();
 
-	this.calculate();
-
-	if (this.callback) {
-		
-		this.callback(this.date, this);
-	}
+  if (this.callback) {
+    this.callback(this.date, this);
+  }
 };
 
 Timer.prototype.calculate = function () {
+  var hours = Math.floor(this.timeStamp / 60 / 60);
+  var minutes = Math.floor(this.timeStamp / 60) - hours * 60;
+  var seconds = this.timeStamp % 60;
 
-	var hours	= Math.floor(this.timeStamp / 60 / 60);
-	var minutes	= Math.floor(this.timeStamp / 60) - (hours * 60);
-	var seconds	= this.timeStamp % 60;
-
-	this.date = {
-		hours,
-		minutes,
-		seconds
-	};
+  this.date = {
+    hours,
+    minutes,
+    seconds,
+  };
 };
 
 Timer.prototype.done = function (callback) {
+  if (typeof callback !== "function") {
+    this.stop();
 
-	if (typeof callback !== 'function') {
+    throw "O argumento de done só permite funcções";
+  }
 
-		this.stop();
-
-		throw 'O argumento de done só permite funcções';
-	}
-
-	this.callback = callback;
+  this.callback = callback;
 };

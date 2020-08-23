@@ -1,216 +1,193 @@
 (function () {
+  var formRegisterTask = document.getElementById("form_register_task");
+  var buttonCalculateTotal = document.getElementById("btn_calculate_total");
+  var timerInstance = [];
+  var templateTask = null;
 
-	var formRegisterTask		= document.getElementById('form_register_task');
-	var buttonCalculateTotal 	= document.getElementById('btn_calculate_total');
-	var timerInstance 			= [];
-	var templateTask 			= null;
+  var setTemplateTask = (template) => {
+    templateTask = template;
+  };
 
-	var setTemplateTask = (template) => {
+  var getTemplateTask = () => {
+    return templateTask;
+  };
 
-		templateTask = template;
-	};
+  var verifyTemplate = () => {
+    var template = document.getElementById("task_template");
 
-	var getTemplateTask = () => {
+    if (!template) {
+      return false;
+    }
 
-		return templateTask;
-	};
+    setTemplateTask(template.content);
 
-	var verifyTemplate = () => {
+    return true;
+  };
 
-		var template = document.getElementById('task_template');
+  var timeToString = function (date) {
+    var hours = date.hours.toString().padStart(2, "0");
+    var minutes = date.minutes.toString().padStart(2, "0");
+    var seconds = date.seconds.toString().padStart(2, "0");
 
-		if (!template) {
+    return hours + ":" + minutes + ":" + seconds;
+  };
 
-			return false;
-		}
+  var playTask = (e) => {
+    e.preventDefault();
 
-		setTemplateTask(template.content);
+    var target = e.target;
+    var index = target.getAttribute("data-index");
 
-		return true;
-	};
+    var parentNode = target.parentNode;
+    var textField = parentNode.querySelector(".time-field");
 
-	var timeToString = function (date) {
+    var timer = timerInstance[index];
 
-		var hours	= date.hours.toString().padStart(2, '0');
-		var minutes = date.minutes.toString().padStart(2, '0');
-		var seconds = date.seconds.toString().padStart(2, '0');
+    timer.start().done(function (date, instance) {
+      textField.innerText = timeToString(date);
 
-		return hours + ':' + minutes + ':' + seconds;
-	};
+      updateStorageData(index, instance.timeStamp, true);
+    });
 
-	var playTask = (e) => {
+    //
+    target.style.display = "none";
 
-		e.preventDefault();
-    
-		var target 		= e.target;
-		var index		= target.getAttribute('data-index');
+    parentNode.querySelector(".control-stop").style.display = "block";
+  };
 
-		var parentNode 	= target.parentNode;
-		var textField 	= parentNode.querySelector('.time-field');
+  var stopTask = (e) => {
+    e.preventDefault();
 
-		var timer 		= timerInstance[index];
+    var target = e.target;
+    var index = target.getAttribute("data-index");
 
-		timer.start().done(function (date, instance) {
+    var parentNode = target.parentNode;
 
-			textField.innerText = timeToString(date);
+    timerInstance[index].stop();
 
-			updateStorageData(index, instance.timeStamp, true);
-		});
+    updateStorageData(index, timerInstance[index].timeStamp, false);
 
-		//
-		target.style.display = 'none';
+    //
+    target.style.display = "none";
 
-		parentNode.querySelector('.control-stop').style.display = 'block';
-	};
+    parentNode.querySelector(".control-start").style.display = "block";
+  };
 
-	var stopTask = (e) => {
+  var renderTaskList = (list) => {
+    var taskList = document.getElementById("task_list");
+    var taskItems = taskList.querySelectorAll(".task-item");
 
-		e.preventDefault();
+    if (Array.isArray(list)) {
+      var templateTask = getTemplateTask();
 
-		var target	= e.target;
-		var index	= target.getAttribute('data-index');
+      list.forEach((item, index) => {
+        if (item.hasOwnProperty("label") && item.hasOwnProperty("timestamp")) {
+          if (!taskItems[index]) {
+            var taskContent = templateTask.cloneNode(true);
 
-		var parentNode 	= target.parentNode;
+            var btnStart = taskContent.querySelector(".control-start");
+            var btnStop = taskContent.querySelector(".control-stop");
 
-		timerInstance[index].stop();
-		
-		updateStorageData(index, timerInstance[index].timeStamp, false);
+            var timer = new Timer(item.timestamp);
 
-		//
-		target.style.display = 'none';
+            timerInstance[index] = timer;
 
-		parentNode.querySelector('.control-start').style.display = 'block';
-	};
+            taskContent.querySelector(".task-field").innerText = item.label;
+            taskContent.querySelector(".time-field").innerText = timeToString(
+              timer.date
+            );
 
-	var renderTaskList = (list) => {
+            btnStart.setAttribute("data-index", index);
+            btnStart.addEventListener("click", playTask);
 
-		var taskList 	= document.getElementById('task_list');
-		var taskItems 	= taskList.querySelectorAll('.task-item')
+            if (item.started) {
+              btnStart.click();
+            }
 
-		if (Array.isArray(list)) {
+            btnStop.setAttribute("data-index", index);
+            btnStop.addEventListener("click", stopTask);
 
-			var templateTask = getTemplateTask();
-	
-			list.forEach((item, index) => {
-				
-				if (item.hasOwnProperty('label') && item.hasOwnProperty('timestamp')) {
+            taskList.appendChild(taskContent);
+          }
+        }
+      });
+    }
+  };
 
-					if (!taskItems[index]) {
+  var getStorageData = function () {
+    var storageData = localStorage.getItem("task-list");
+    storageData = JSON.parse(storageData) || [];
 
-						var taskContent = templateTask.cloneNode(true);
-	
-						var btnStart 	= taskContent.querySelector('.control-start');
-						var btnStop 	= taskContent.querySelector('.control-stop');
-	
-						var timer		= new Timer(item.timestamp);
-	
-						timerInstance[index] = timer;
-			
-						taskContent.querySelector('.tesk-field').innerText = item.label;
-						taskContent.querySelector('.time-field').innerText = timeToString(timer.date);
-	
-						btnStart.setAttribute('data-index', index);
-						btnStart.addEventListener('click', playTask);
+    return storageData;
+  };
 
-						if (item.started) {
+  var setStorageData = function (data) {
+    localStorage.setItem("task-list", JSON.stringify(data));
+  };
 
-							btnStart.click();
-						}
-	
-						btnStop.setAttribute('data-index', index);
-						btnStop.addEventListener('click', stopTask);
-						
-						taskList.appendChild(taskContent);
-					}
-				}
-			});
-		}
-	};
+  var updateStorageData = function (index, timestamp, started) {
+    var storageData = getStorageData();
 
-	var getStorageData = function () {
+    storageData[index].timestamp = timestamp;
+    storageData[index].started = started;
 
-		var storageData = localStorage.getItem('task-list');
-			storageData = JSON.parse(storageData) || [];
+    setStorageData(storageData);
+  };
 
-		return storageData;
-	};
+  var submitForm = function (e) {
+    e.preventDefault();
 
-	var setStorageData = function (data) {
+    var input = e.target.elements.input_task;
 
-		localStorage.setItem('task-list', JSON.stringify(data));
-	};
+    if (!input.value.length) {
+      return false;
+    }
 
-	var updateStorageData = function (index, timestamp, started) {
+    var data = {
+      label: input.value,
+      timestamp: 0,
+      started: false,
+    };
 
-		var storageData = getStorageData();
+    var storageData = getStorageData();
+    storageData.push(data);
 
-		storageData[index].timestamp = timestamp;
-		storageData[index].started = started;
+    setStorageData(storageData);
 
-		setStorageData(storageData);
-	};
+    renderTaskList(storageData);
 
-	var submitForm = function (e) {
+    input.value = "";
+  };
 
-		e.preventDefault();
+  var getTotalTime = function () {
+    var storageData = getStorageData();
+    var timestamp = 0;
+    var totalField = document.querySelector(".total-time");
 
-		var input = e.target.elements.input_task;
+    storageData.forEach(function (item) {
+      timestamp += item.timestamp;
+    });
 
-		if (!input.value.length) {
+    var timer = new Timer(timestamp);
 
-			return false;
-		}
+    totalField.innerText = timeToString(timer.date);
+  };
 
-		var data = {
-			label 		: input.value,
-			timestamp 	: 0,
-			started 	: false
-		};
+  var calculateTotal = function (e) {
+    e.preventDefault();
 
-		var storageData = getStorageData();
-			storageData.push(data);
+    getTotalTime();
+  };
 
-		setStorageData(storageData);
+  var init = function () {
+    formRegisterTask.addEventListener("submit", submitForm);
+    buttonCalculateTotal.addEventListener("click", calculateTotal);
 
-		renderTaskList(storageData);
+    if (verifyTemplate()) {
+      renderTaskList(getStorageData());
+      getTotalTime();
+    }
+  };
 
-		input.value = '';
-	};
-
-	var getTotalTime = function () {
-
-		var storageData = getStorageData();
-		var timestamp	= 0;
-		var totalField 	= document.querySelector('.total-time');
-
-		storageData.forEach(function (item) {
-
-			timestamp += item.timestamp;
-		});
-
-		var timer = new Timer(timestamp);
-
-		totalField.innerText = timeToString(timer.date);
-	}
-
-	var calculateTotal = function (e) {
-
-		e.preventDefault();
-
-		getTotalTime();
-	};
-
-	var init = function () {
-
-		formRegisterTask.addEventListener('submit', submitForm);
-		buttonCalculateTotal.addEventListener('click', calculateTotal);
-
-		if (verifyTemplate()) {
-
-			renderTaskList(getStorageData());
-			getTotalTime();
-		}
-	};
-
-	init();
-}())
+  init();
+})();
