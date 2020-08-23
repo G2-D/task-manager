@@ -10,6 +10,7 @@ function Timer(timestamp) {
 	};
 
 	this.calculate();
+
 }
 
 Timer.prototype.start = function () {
@@ -17,7 +18,7 @@ Timer.prototype.start = function () {
 	this.stop();
 
 	if (!this.timeInterval) {
-
+    
 		this.timeInterval = setInterval(function () { this.count(); }.bind(this), 1000)
 	}
 
