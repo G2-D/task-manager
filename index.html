@@ -6,15 +6,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Task Manager</title>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet" />
+	<link href="css/main.css" rel="stylesheet" />
 </head>
 
 <body>
 	<main id="root">
 		<h1 class="title">Gerenciador de tasks e reports</h1>
 		<form id="form_register_task" class="form-add-taks">
-			<input type="text" placeholder="Descrição da tarefa" id="task" value="">
-			<button type="button">Adicionar</button>
+			<input type="text" placeholder="Descrição da tarefa" id="input_task" />
+			<button type="submit" id="btn_register_task">Adicionar</button>
 		</form>
 		<div id="task_list" class="task-list">
 			<!-- <div class="task-item">
@@ -30,10 +30,10 @@
 		</div>
 		<footer>
 			<div class="total-time-container">
-				<strong class="total-time">00:00:02</strong>
+				<strong class="total-time">00:00:00</strong>
 				<span class="total-time-title">Total trabalhado</span>
 			</div>
-			<button type="button">Calcular</button>
+			<button type="button" id="btn_calculate_total">Calcular</button>
 		</footer>
 		<div class="shadow"></div>
 	</main>
@@ -48,8 +48,12 @@
 			<button type="button" class="control-start" name="control">
 				start
 			</button>
+			<button type="button" class="control-stop" name="control" style="display: none;">
+				stop
+			</button>
 		</div>
 	</template>
+	<script defer type="application/javascript" src="js/timer.js"></script>
 	<script defer type="application/javascript" src="js/scripts.js"></script>
 </body>
 
