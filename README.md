@@ -3,7 +3,7 @@ Task Manager
 </h1>
 
 <p align="center">Atividade DevBoost da criação de um CRUD para gerenciamento de tarefas.</p>
-
+<br><br><br><br>
 <div>
   <p align="center">
     <img src="https://i.imgur.com/YDIEcJU.png?2" alt="demo-web" width="800">
