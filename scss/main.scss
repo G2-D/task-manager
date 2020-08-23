@@ -1,0 +1,328 @@
+$invert-colors: false !default;
+
+$primary-color: #f57921;
+$secondary-color: #004b8f;
+$danger-color: #935ba8;
+
+@if $invert-colors {
+  $primary-color: #004b8f;
+  $secondary-color: #f57921;
+}
+
+@mixin transition($property) {
+  -webkit-transition: $property;
+  -ms-transition: $property;
+  -moz-transition: $property;
+  transition: $property;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+input,
+button {
+  font: 16px Roboto, sans-serif;
+}
+
+#root {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.title {
+  font-size: 48px;
+  color: #ffffff;
+  max-width: 458px;
+  margin-top: 50px;
+  line-height: 56px;
+  color: lighten($primary-color, 5%);
+}
+
+.form-add-taks {
+  max-width: 960px;
+  margin-top: 40px;
+  display: flex;
+
+  input {
+    flex: 1;
+    height: 72px;
+    border: 0;
+    padding: 0 24px;
+    border-radius: 5px 0 0 5px;
+    font-weight: 100;
+    color: #3a3a3a;
+    border: 2px solid #21222c;
+    border-right: 0;
+    font-size: 20px;
+    @include transition(border 0.3s);
+
+    &::placeholder {
+      color: #a8a8b3;
+    }
+
+    &:focus {
+      border: 2px solid darken($primary-color, 10%);
+      border-right: 0;
+    }
+  }
+
+  button {
+    width: 206px;
+    height: 72px;
+    background: $primary-color;
+    border-radius: 0px 5px 5px 0px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-left: 0;
+    font-size: 18px;
+    @include transition(background-color 0.3s);
+
+    &:hover {
+      background: darken($primary-color, 10%);
+      border-left: 0;
+    }
+  }
+
+  #btn_clear_list {
+    height: 72px;
+    margin-left: 60px;
+    background: $danger-color;
+    border-radius: 5px 5px 5px 5px;
+
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-left: 0;
+    font-size: 18px;
+    @include transition(background-color 0.3s);
+
+    &:hover {
+      background: darken($danger-color, 10%);
+      border-left: 0;
+    }
+  }
+}
+
+.task-list {
+  margin-top: 80px;
+  max-width: 960px;
+  height: 100%;
+
+  .task-item {
+    background: #ffffff;
+    box-shadow: 0px 1px 6px #ced0d3;
+    border-radius: 5px;
+    width: 100%;
+    padding: 24px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateX(10px);
+    }
+
+    .task-field {
+      font-weight: normal;
+      font-size: 18px;
+      color: #434141;
+      white-space: nowrap;
+      width: 30em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .time-field {
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+      color: #6b6c70;
+      margin-right: 80px;
+      margin-left: 10px;
+    }
+
+    .task-actions {
+      display: flex;
+      align-items: center;
+
+      .control-start {
+        width: 130px;
+        height: 41px;
+        background: $primary-color;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        font-size: 16px;
+        @include transition(background 0.3s);
+
+        &:hover {
+          background: darken($primary-color, 10%);
+        }
+      }
+
+      .control-stop {
+        width: 130px;
+        height: 41px;
+        background: $secondary-color;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        font-size: 16px;
+        @include transition(background 0.3s);
+
+        &:hover {
+          background: darken($secondary-color, 5%);
+        }
+      }
+
+      .material-icons {
+        margin-left: 10px;
+        font-size: 38px;
+        color: #935ba8;
+        cursor: pointer;
+        @include transition(color 0.3s);
+
+        &:hover {
+          color: darken($danger-color, 10%);
+        }
+      }
+    }
+
+    & + .task-item {
+      margin-top: 16px;
+    }
+  }
+}
+
+footer {
+  width: 100%;
+  background: #fff;
+  padding: 10px 10px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  position: sticky;
+  bottom: 0;
+  margin-bottom: -10px;
+
+  .auto-calc-container {
+    justify-self: flex-start;
+
+    input[type="checkbox"] + label {
+      display: block;
+      margin: 0.3em;
+      cursor: pointer;
+      padding: 0.3em;
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"] + label:before {
+      content: "\2714";
+      border: 0.1em solid #000;
+      border-radius: 0.2em;
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      padding-left: 0.2em;
+      padding-bottom: 0.3em;
+      margin-right: 0.5em;
+      vertical-align: center;
+      color: transparent;
+      transition: 0.2s;
+    }
+
+    input[type="checkbox"] + label:active:before {
+      transform: scale(0);
+    }
+
+    input[type="checkbox"]:checked + label:before {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: #fff;
+    }
+
+    input[type="checkbox"]:disabled + label:before {
+      transform: scale(1);
+      border-color: #aaa;
+    }
+
+    input[type="checkbox"]:checked:disabled + label:before {
+      transform: scale(1);
+      background-color: lighten($primary-color, 10%);
+      border-color: lighten($primary-color, 10%);
+    }
+  }
+
+  .actions-footer-calc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .total-time-container {
+      display: flex;
+      flex-direction: column;
+
+      .total-time {
+        font-weight: bold;
+        font-size: 48px;
+        color: $secondary-color;
+      }
+
+      .total-time-title {
+        font-size: 24px;
+        line-height: 28px;
+        color: #404043;
+      }
+    }
+  }
+
+  button {
+    width: 187px;
+    height: 59px;
+    background: $primary-color;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    border: none;
+    font-size: 24px;
+    margin-left: 40px;
+    @include transition(background 0.3s);
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+}
+
+.shadow {
+  position: sticky;
+  bottom: 106px;
+  width: 99%;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.75);
+  margin: 0 auto;
+}
